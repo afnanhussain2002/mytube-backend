@@ -80,21 +80,38 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Video Id is missing");
   }
 
- /*  const thumbnailLocalPath = req.file?.thumbnail[0]?.path;
-  const videoLocalPath = req.file?.videoFile[0]?.path;
+  /* const thumbnailLocalPath = req.files?.thumbnail[0]?.path || "";
+  const videoLocalPath = req.files?.videoFile[0]?.path || "";
 
-  if (!thumbnailLocalPath && !videoLocalPath) {
+  if (!(thumbnailLocalPath || videoLocalPath)) {
     throw new ApiError(400, "Thumbnail and Video is required");
-  }
+  } */
+
+
+    let thumbnailLocalPath;
+
+    if (req.files.thumbnail) {
+        thumbnailLocalPath = req.files.thumbnail[0].path;
+    }else{
+        thumbnailLocalPath = ""
+    }
+
+    let videoLocalPath;
+
+    if (req.files.videoFile) {
+        videoLocalPath = req.files.videoFile[0].path;
+    }else{
+        videoLocalPath = ""
+    }
 
   const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-  const video = await uploadOnCloudinary(videoLocalPath); */
+  const video = await uploadOnCloudinary(videoLocalPath);
 
-  /*   if (! thumbnail && !video) {
+  /*  if (! thumbnail && !video) {
         throw new ApiError(400, "Thumbnail and Video is required")
     } */
 
-  if (!(title || description)) {
+  if (!(title || description || thumbnail || video)) {
     throw new ApiError("Change anything for update details");
   }
 
@@ -104,6 +121,9 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
       $set: {
         title: title,
         description: description,
+        thumbnail: thumbnail?.url,
+        videoFile: video?.url,
+        duration: video?.duration,
       },
     },
     { new: true }
@@ -120,35 +140,6 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
     );
 });
 
-// update video
-
-const updateVideo = asyncHandler(async (req, res) => {
-  const { videoId } = req.params;
-  const videoLocalPath = req.file?.videoFile[0]?.path
-
-  if (!videoLocalPath) {
-    throw new ApiError(400, "Video is missing")
-  }
-
-  const video = await uploadOnCloudinary(videoLocalPath);
-
-  if (!video) {
-    throw new ApiError(500, "Error while uploading the video")
-  }
-
-  const updateVideo = await Video.findByIdAndUpdate(
-    videoId,
-    {
-        $set:{
-            videoFile: video?.url,
-            duration: video?.duration
-        },
 
 
-    },
-    {new:true}
-  )
-     return res.status(200).json(new ApiResponse(200, updateVideo, "Video update successfully"))
-});
-
-export { publishVideo, getVideoById, updateVideoDetails, updateVideo };
+export { publishVideo, getVideoById, updateVideoDetails};
