@@ -4,6 +4,8 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
+// publish video
+
 const publishVideo = asyncHandler(async(req,res) =>{
     const {title, description} = req.body;
 
@@ -49,6 +51,10 @@ const publishVideo = asyncHandler(async(req,res) =>{
     return res.status(200).json(new ApiResponse(200, createdVideo, "Video upload Successfully"))
 
 
+})
+
+const getVideoById = asyncHandler(async(req,res) =>{
+    const {videoId} = req.params
 })
 
 export{publishVideo}
