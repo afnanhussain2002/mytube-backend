@@ -79,10 +79,15 @@ const getVideoById = asyncHandler(async(req,res) =>{
 const updateVideo = asyncHandler(async(req,res) =>{
 
     const {videoId} = req.params;
+    const {title, description} = req.body;
 
     if (!videoId) {
         throw new ApiError(401, "Video Id is missing")
     }
+
+    
+
+
 
 
 })
