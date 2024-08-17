@@ -344,7 +344,7 @@ const updateUserCover = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "cover image update successfully"));
 });
 
-const getUserChannelProfile = asyncHandler(async (req, res) => {
+const getUserChannelProfile = asyncHandler(async (req, res) => {  
   const { username } = req.params;
 
   if (!username?.trim()) {

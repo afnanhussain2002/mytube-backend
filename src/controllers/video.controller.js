@@ -1,3 +1,4 @@
+import { User } from "../models/user.model.js";
 import { Video } from "../models/video.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -85,11 +86,40 @@ const updateVideo = asyncHandler(async(req,res) =>{
         throw new ApiError(401, "Video Id is missing")
     }
 
-    
+    const thumbnailLocalPath = req.files?.thumbnail[0]?.path
+    const videoLocalPath = req.files?.videoFile[0]?.path
+
+    if (!thumbnailLocalPath && !videoLocalPath) {
+        throw new ApiError(400, "Thumbnail and Video is required")
+    }
+
+    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
+    const video = await uploadOnCloudinary(videoLocalPath)
+
+    if (! thumbnail && !video) {
+        throw new ApiError(400, "Thumbnail and Video is required")
+    }
 
 
 
+    const updateVideoDetails = await User.findByIdAndUpdate(
+        videoId,
+        {
+            $set:{
+                title,
+                description,
+                thumbnail: thumbnail?.url,
+                videoFile: video?.url,
+                duration: video?.duration,
 
+            }
+        },
+        {new:true}
+    )
+
+       return res.
+              status(200)
+              .json(new ApiResponse (200, updateVideoDetails, "Video details update successfully"))
 })
 
 export{publishVideo, getVideoById, updateVideo}
