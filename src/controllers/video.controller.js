@@ -146,7 +146,7 @@ const deleteVideo = asyncHandler(async(req,res) =>{
 
     const {videoId} = req.params;
 
-    const deleteAVideo = await User.findByIdAndDelete( videoId )
+    const deleteAVideo = await Video.findByIdAndDelete( videoId )
 
     if (!deleteAVideo) {
         throw new ApiError(404, "Video not found")
