@@ -77,7 +77,7 @@ const getVideoById = asyncHandler(async(req,res) =>{
 //  update video
 
 const updateVideo = asyncHandler(async(req,res) =>{
-    
+
 })
 
-export{publishVideo, getVideoById}
+export{publishVideo, getVideoById, updateVideo}
