@@ -59,6 +59,16 @@ const getVideoById = asyncHandler(async(req,res) =>{
     if (!videoId) {
         throw new ApiError(401, "Video Id is missing")
     }
+
+    const singleVideo = await Video.findById(videoId);
+
+    if (!singleVideo) {
+        throw new ApiError(400, "Video not found")
+    }
+
+    return res.
+           status(200)
+           .json(new ApiResponse(200, singleVideo, "Video found by id"))
 })
 
 export{publishVideo, getVideoById}
