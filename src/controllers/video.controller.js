@@ -55,6 +55,7 @@ const publishVideo = asyncHandler(async(req,res) =>{
 
 const getVideoById = asyncHandler(async(req,res) =>{
     const {videoId} = req.params;
+    console.log("id",videoId);
 
     if (!videoId) {
         throw new ApiError(401, "Video Id is missing")
