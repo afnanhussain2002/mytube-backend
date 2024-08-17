@@ -57,4 +57,4 @@ const getVideoById = asyncHandler(async(req,res) =>{
     const {videoId} = req.params
 })
 
-export{publishVideo}
+export{publishVideo, getVideoById}
