@@ -7,109 +7,148 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // publish video
 
-const publishVideo = asyncHandler(async(req,res) =>{
-    const {title, description} = req.body;
+const publishVideo = asyncHandler(async (req, res) => {
+  const { title, description } = req.body;
 
+  if ([title, description].some((field) => field?.trim() === "")) {
+    throw new ApiError(400, "Title and Description is required");
+  }
 
-    if (
-        [title, description].some(field => field?.trim() === "")
-    ) {
-        throw new ApiError(400, "Title and Description is required")
-    }
+  const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
+  const videoLocalPath = req.files?.videoFile[0]?.path;
 
-    const thumbnailLocalPath = req.files?.thumbnail[0]?.path
-    const videoLocalPath = req.files?.videoFile[0]?.path
+  if (!thumbnailLocalPath && !videoLocalPath) {
+    throw new ApiError(400, "Thumbnail and Video is required");
+  }
 
-    if (!thumbnailLocalPath && !videoLocalPath) {
-        throw new ApiError(400, "Thumbnail and Video is required")
-    }
+  const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+  const video = await uploadOnCloudinary(videoLocalPath);
 
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
-    const video = await uploadOnCloudinary(videoLocalPath)
+  if (!thumbnail && !video) {
+    throw new ApiError(400, "Thumbnail and Video is required");
+  }
 
-    if (! thumbnail && !video) {
-        throw new ApiError(400, "Thumbnail and Video is required")
-    }
+  const myTubeVideo = await Video.create({
+    title,
+    description,
+    thumbnail: thumbnail?.url,
+    videoFile: video?.url,
+    duration: video?.duration,
+    views: 0,
+    owner: req.user,
+  });
 
-    const myTubeVideo = await Video.create({
-        title,
-        description,
-        thumbnail: thumbnail?.url,
-        videoFile: video?.url,
-        duration: video?.duration,
-        views:0,
-        owner:req.user
+  const createdVideo = await Video.findById(myTubeVideo._id);
 
+  if (!createdVideo) {
+    throw new ApiError(500, "Something went wrong when upload the video");
+  }
 
-    }) 
-
-    const createdVideo = await Video.findById(myTubeVideo._id)
-
-    if (!createdVideo) {
-        throw new ApiError(500, "Something went wrong when upload the video")
-    }
-
-    return res.status(200).json(new ApiResponse(200, createdVideo, "Video upload Successfully"))
-
-
-})
+  return res
+    .status(200)
+    .json(new ApiResponse(200, createdVideo, "Video upload Successfully"));
+});
 
 // get a single video
 
-const getVideoById = asyncHandler(async(req,res) =>{
-    const {videoId} = req.params;
-    console.log("id",videoId);
+const getVideoById = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+  console.log("id", videoId);
 
-    if (!videoId) {
-        throw new ApiError(401, "Video Id is missing")
-    }
+  if (!videoId) {
+    throw new ApiError(401, "Video Id is missing");
+  }
 
-    const singleVideo = await Video.findById(videoId);
+  const singleVideo = await Video.findById(videoId);
 
-    if (!singleVideo) {
-        throw new ApiError(400, "Video not found")
-    }
+  if (!singleVideo) {
+    throw new ApiError(400, "Video not found");
+  }
 
-    return res.
-           status(200)
-           .json(new ApiResponse(200, singleVideo, "Video found by id"))
-})
+  return res
+    .status(200)
+    .json(new ApiResponse(200, singleVideo, "Video found by id"));
+});
 
 //  update video details
 
-const updateVideoDetails = asyncHandler(async(req,res) =>{
+const updateVideoDetails = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+  const { title, description } = req.body;
 
-    const {videoId} = req.params;
-    const {title, description} = req.body;
+  if (!videoId) {
+    throw new ApiError(401, "Video Id is missing");
+  }
 
-    if (!videoId) {
-        throw new ApiError(401, "Video Id is missing")
-    }
-     
-    if (!(title || description)) {
-        throw new ApiError("Change the title or description for update details")
-    }
+ /*  const thumbnailLocalPath = req.file?.thumbnail[0]?.path;
+  const videoLocalPath = req.file?.videoFile[0]?.path;
 
-    const updateVideoDetails = await Video.findByIdAndUpdate(
-        videoId,
-        {
-            $set:{
-                title: title,
-                description: description
-            }
+  if (!thumbnailLocalPath && !videoLocalPath) {
+    throw new ApiError(400, "Thumbnail and Video is required");
+  }
+
+  const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+  const video = await uploadOnCloudinary(videoLocalPath); */
+
+  /*   if (! thumbnail && !video) {
+        throw new ApiError(400, "Thumbnail and Video is required")
+    } */
+
+  if (!(title || description)) {
+    throw new ApiError("Change anything for update details");
+  }
+
+  const updateVideoDetails = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $set: {
+        title: title,
+        description: description,
+      },
+    },
+    { new: true }
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        updateVideoDetails,
+        "Video details update successfully"
+      )
+    );
+});
+
+// update video
+
+const updateVideo = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+  const videoLocalPath = req.file?.videoFile[0]?.path
+
+  if (!videoLocalPath) {
+    throw new ApiError(400, "Video is missing")
+  }
+
+  const video = await uploadOnCloudinary(videoLocalPath);
+
+  if (!video) {
+    throw new ApiError(500, "Error while uploading the video")
+  }
+
+  const updateVideo = await Video.findByIdAndUpdate(
+    videoId,
+    {
+        $set:{
+            videoFile: video?.url,
+            duration: video?.duration
         },
-        {new:true}
-    )
 
-       return res.
-              status(200)
-              .json(new ApiResponse (200, updateVideoDetails, "Video details update successfully"))
-})
 
-// update video 
+    },
+    {new:true}
+  )
+     return res.status(200).json(new ApiResponse(200, updateVideo, "Video update successfully"))
+});
 
-const updateVideo = asyncHandler(async(req,res) =>{
-
-})
-
-export{publishVideo, getVideoById, updateVideoDetails, updateVideo}
+export { publishVideo, getVideoById, updateVideoDetails, updateVideo };
