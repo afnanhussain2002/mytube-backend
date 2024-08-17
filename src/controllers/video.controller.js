@@ -75,9 +75,9 @@ const getVideoById = asyncHandler(async(req,res) =>{
            .json(new ApiResponse(200, singleVideo, "Video found by id"))
 })
 
-//  update video
+//  update video details
 
-const updateVideo = asyncHandler(async(req,res) =>{
+const updateVideoDetails = asyncHandler(async(req,res) =>{
 
     const {videoId} = req.params;
     const {title, description} = req.body;
@@ -85,33 +85,17 @@ const updateVideo = asyncHandler(async(req,res) =>{
     if (!videoId) {
         throw new ApiError(401, "Video Id is missing")
     }
-
-    const thumbnailLocalPath = req.files?.thumbnail[0]?.path
-    const videoLocalPath = req.files?.videoFile[0]?.path
-
-    if (!thumbnailLocalPath && !videoLocalPath) {
-        throw new ApiError(400, "Thumbnail and Video is required")
+     
+    if (!(title || description)) {
+        throw new ApiError("Change the title or description for update details")
     }
 
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
-    const video = await uploadOnCloudinary(videoLocalPath)
-
-    if (! thumbnail && !video) {
-        throw new ApiError(400, "Thumbnail and Video is required")
-    }
-
-
-
-    const updateVideoDetails = await User.findByIdAndUpdate(
+    const updateVideoDetails = await Video.findByIdAndUpdate(
         videoId,
         {
             $set:{
-                title,
-                description,
-                thumbnail: thumbnail?.url,
-                videoFile: video?.url,
-                duration: video?.duration,
-
+                title: title,
+                description: description
             }
         },
         {new:true}
@@ -122,4 +106,10 @@ const updateVideo = asyncHandler(async(req,res) =>{
               .json(new ApiResponse (200, updateVideoDetails, "Video details update successfully"))
 })
 
-export{publishVideo, getVideoById, updateVideo}
+// update video 
+
+const updateVideo = asyncHandler(async(req,res) =>{
+
+})
+
+export{publishVideo, getVideoById, updateVideoDetails, updateVideo}
