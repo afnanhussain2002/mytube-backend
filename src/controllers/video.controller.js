@@ -53,6 +53,8 @@ const publishVideo = asyncHandler(async(req,res) =>{
 
 })
 
+// get a single video
+
 const getVideoById = asyncHandler(async(req,res) =>{
     const {videoId} = req.params;
     console.log("id",videoId);
@@ -70,6 +72,12 @@ const getVideoById = asyncHandler(async(req,res) =>{
     return res.
            status(200)
            .json(new ApiResponse(200, singleVideo, "Video found by id"))
+})
+
+//  update video
+
+const updateVideo = asyncHandler(async(req,res) =>{
+    
 })
 
 export{publishVideo, getVideoById}
