@@ -144,6 +144,12 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
 
 const deleteVideo = asyncHandler(async(req,res) =>{
 
+    const {videoId} = req.params;
+
+    const deleteAVideo = await User.findByIdAndDelete(
+        
+    )
+
 })
 
 export { publishVideo, getVideoById, updateVideoDetails, deleteVideo};
