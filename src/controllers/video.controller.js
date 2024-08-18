@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+
 import { Video } from "../models/video.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -159,6 +159,19 @@ const deleteVideo = asyncHandler(async(req,res) =>{
 const togglePublishStatus = asyncHandler(async(req,res) =>{
  
  const {videoId} = req.params 
+
+ const video = await Video.findById(videoId)
+
+ if (!video) {
+  throw new ApiError(400, "Video is not found!")
+ }
+
+ video.isPublished = !video.isPublished
+
+ await video.save()
+
+ return res.status(200).json(new ApiResponse(200, video, "Published Status Change Successfully"))
+
 
 })
 
