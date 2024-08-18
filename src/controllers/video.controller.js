@@ -49,7 +49,7 @@ const publishVideo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdVideo, "Video upload Successfully"));
 });
 
-const getAllVideos = asyncHandler(async(req,res) =>{
+/* const getAllVideos = asyncHandler(async(req,res) =>{
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
 
   // convert the page into number 
@@ -67,7 +67,7 @@ const getAllVideos = asyncHandler(async(req,res) =>{
     filter.userId = userId;
   }
 
-  console.log("userId",userId);
+  console.log("userId",filter);
 
   // Build the sort object
 
@@ -91,7 +91,53 @@ const getAllVideos = asyncHandler(async(req,res) =>{
 
 
 
-})
+}) */
+
+  const getAllVideos = asyncHandler(async(req,res) =>{
+    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+   
+    // convert the page into number 
+  const pageNumber = parseInt(page, 10);
+  const limitNumber = parseFloat(limit, 10);
+
+  // Build the filter object
+
+  const matchStage = {};
+  if (query) {
+    matchStage.title = { $regex: query, $options:"i"}
+  }
+  
+  if (userId) {
+    matchStage.userId = userId;
+  }
+
+  const sortStage = {};
+
+  sortStage[sortBy] = sortType === 'asc'? 1 : -1;
+
+  // aggregation pipeline
+
+  const pipeline = [
+    {$match: matchStage},
+    {$sort: sortStage},
+    {$skip: (pageNumber -1) * limitNumber},
+    {$limit: limitNumber}
+  ]
+
+  const videos = await Video.aggregate(pipeline)
+
+  const totalVideos = await Video.countDocuments(matchStage)
+
+  res.status(200).json(new ApiResponse(200, {
+    success:true,
+    data: videos,
+    total:totalVideos,
+    page: pageNumber,
+    totalPages: Math.ceil(totalVideos / limitNumber)
+  }, "Video fetched successfully"))
+
+   
+  })
 
 // get a single video
 
