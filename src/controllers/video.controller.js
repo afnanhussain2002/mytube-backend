@@ -156,6 +156,8 @@ const deleteVideo = asyncHandler(async(req,res) =>{
 
 })
 
+// toggle between publish status
+
 const togglePublishStatus = asyncHandler(async(req,res) =>{
  
  const {videoId} = req.params 
