@@ -49,6 +49,10 @@ const publishVideo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdVideo, "Video upload Successfully"));
 });
 
+const getAllVideos = asyncHandler(async(req,res) =>{
+  
+})
+
 // get a single video
 
 const getVideoById = asyncHandler(async (req, res) => {
