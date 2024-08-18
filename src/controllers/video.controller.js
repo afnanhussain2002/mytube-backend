@@ -77,6 +77,16 @@ const getAllVideos = asyncHandler(async(req,res) =>{
 
   const videos = await Video.find(filter).sort(sort).skip((pageNumber -1) * limitNumber).limit(limitNumber)
 
+  const totalVideos = await Video.countDocuments(filter)
+
+  res.status(200).json(new ApiResponse(200, {
+    success:true,
+    data: videos,
+    total:totalVideos,
+    page: pageNumber,
+    totalPages: Math.ceil(totalVideos / limitNumber)
+  }, "Video fetched successfully"))
+
 
 
 })
