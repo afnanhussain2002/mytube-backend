@@ -1,6 +1,6 @@
-import { Video } from "../models/video.model";
-import { ApiError } from "../utils/apiError";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Video } from "../models/video.model.js";
+import { ApiError } from "../utils/apiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const verifyOwner = asyncHandler(async(req,_,next) =>{
      try {
