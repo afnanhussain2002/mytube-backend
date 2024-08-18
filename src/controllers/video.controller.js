@@ -54,7 +54,7 @@ const getAllVideos = asyncHandler(async(req,res) =>{
 
   // convert the page into number 
   const pageNumber = parseInt(page, 10);
-  const limitNumber = parseFloat(page, 10);
+  const limitNumber = parseFloat(limit, 10);
 
   // Build the filter object
 
@@ -66,6 +66,8 @@ const getAllVideos = asyncHandler(async(req,res) =>{
   if (userId) {
     filter.userId = userId;
   }
+
+  console.log("userId",userId);
 
   // Build the sort object
 
