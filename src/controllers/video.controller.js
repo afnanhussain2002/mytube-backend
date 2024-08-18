@@ -50,6 +50,30 @@ const publishVideo = asyncHandler(async (req, res) => {
 });
 
 const getAllVideos = asyncHandler(async(req,res) =>{
+  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
+
+  // convert the page into number 
+  const pageNumber = parseInt(page, 10);
+  const limitNumber = parseFloat(page, 10);
+
+  // Build the filter object
+
+  const filter = {};
+  if (query) {
+    filter.title = { $regex: query, $options:"i"}
+  }
+  
+  if (userId) {
+    filter.userId = userId;
+  }
+
+  // Build the sort object
+
+  const sort = {};
+
+  sort[sortBy] = sortType === 'asc'? 1 : -1;
+
+
 
 })
 
