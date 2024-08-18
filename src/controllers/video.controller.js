@@ -138,7 +138,10 @@ const publishVideo = asyncHandler(async (req, res) => {
 
    
   })
-
+// get video by userId 
+const getVideoByUserId = asyncHandler(async(req,res) =>{
+  
+})
 // get a single video
 
 const getVideoById = asyncHandler(async (req, res) => {
