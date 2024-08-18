@@ -1,4 +1,5 @@
 
+import mongoose from "mongoose";
 import { Video } from "../models/video.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -140,7 +141,21 @@ const publishVideo = asyncHandler(async (req, res) => {
   })
 // get video by userId 
 const getVideoByUserId = asyncHandler(async(req,res) =>{
-  
+  const {userId} = req.params;
+
+  const getVideos = await Video.aggregate([
+    {
+      $match:{
+        "owner": new mongoose.Types.ObjectId(userId)
+      }
+    }
+  ])
+
+  if (!getVideos) {
+    throw new ApiError(400, "User Id not found!")
+  }
+   
+  return res.status(200).json(new ApiResponse(200, getVideos, "Video fetched successfully"))
 })
 // get a single video
 
@@ -270,4 +285,4 @@ const togglePublishStatus = asyncHandler(async(req,res) =>{
 
 })
 
-export { publishVideo, getVideoById, updateVideoDetails, deleteVideo, togglePublishStatus, getAllVideos};
+export { publishVideo, getVideoById, updateVideoDetails, deleteVideo, togglePublishStatus, getAllVideos, getVideoByUserId};
