@@ -51,4 +51,8 @@ const getUserTweet = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, findTweets, "Tweet fetched successfully"));
 });
 
+const updateTweet = asyncHandler(async(req,res) =>{
+    
+})
+
 export { createTweet, getUserTweet };
