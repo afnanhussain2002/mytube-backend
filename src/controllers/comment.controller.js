@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const getVideoComments = asyncHandler(async(req,res) =>{
-    
+
 })
 
 const addComment = asyncHandler(async(req,res) =>{
@@ -69,4 +69,4 @@ const deleteComment = asyncHandler(async(req,res) =>{
 
 })
 
-export{addComment, updateComment, deleteComment}
+export{getVideoComments,addComment, updateComment, deleteComment}
