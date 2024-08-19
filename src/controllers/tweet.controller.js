@@ -52,7 +52,22 @@ const getUserTweet = asyncHandler(async (req, res) => {
 });
 
 const updateTweet = asyncHandler(async(req,res) =>{
+    const {tweetId} = req.params;
+    const {content} = req.body
 
+    if (!tweetId) {
+        throw new ApiError(401, "Tweet is not found!")
+    }
+
+    const updateTweet = await Tweet.findByIdAndUpdate(
+        tweetId,
+        {
+            $set:{
+                content
+            }
+        },
+        {new:true}
+    )
 })
 
 export { createTweet, getUserTweet, updateTweet };
