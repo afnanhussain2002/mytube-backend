@@ -28,7 +28,10 @@ const createTweet = asyncHandler(async(req,res) =>{
 })
 
 const getUserTweet = asyncHandler(async(req,res) =>{
-  
+    // get the user id
+   const {userId} = req.params;
+
+
 })
 
 export{createTweet, getUserTweet}
