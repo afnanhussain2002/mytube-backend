@@ -37,9 +37,13 @@ import { asyncHandler } from "../utils/asyncHandler.js";
             try {
                 const {id} = req.params
                const userId = req.user
+
+               console.log("id", id);
                
        
                const getOwnerData = await Model.findById(id)
+
+               console.log('get owner data', getOwnerData);
        
                if (!getOwnerData) {
                    throw new ApiError(400, "Data not found")
@@ -54,7 +58,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
                next()
        
             } catch (error) {
-               throw new ApiError(401, error.message || "You are not the owner of that video")
+               throw new ApiError(401, error.message || "You are not the owner of that data")
             }
         })
      }
