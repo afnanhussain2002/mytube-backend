@@ -1,10 +1,11 @@
-import { Comment } from "../models/comment.model";
-import { ApiError } from "../utils/apiError";
-import { ApiResponse } from "../utils/apiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Comment } from "../models/comment.model.js";
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const addComment = asyncHandler(async (req, res) => {
-  const { comment, videoId } = req.body;
+  const { comment } = req.body;
+  const {videoId} = req.params
 
   if (!comment && !videoId) {
     throw new ApiError(401, "Write something for comment");
