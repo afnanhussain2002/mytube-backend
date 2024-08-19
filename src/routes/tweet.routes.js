@@ -5,3 +5,5 @@ import { createTweet } from "../controllers/tweet.controller";
 const router = Router()
 
 router.route("/create-tweet").post(verifyJWT, createTweet)
+
+export default router;
