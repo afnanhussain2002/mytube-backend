@@ -33,7 +33,21 @@ const updateComment = asyncHandler(async(req,res) =>{
     throw new ApiError(401, "Write something for update comment")
    }
 
-   
+   const updateComment = await Comment.findByIdAndUpdate(
+    id,
+    {
+        $set:{
+            content
+        }
+    },
+    {new:true}
+   )
+
+   if (!updateComment) {
+      throw new ApiError(501, "Something went wrong when update the comment")
+   }
+
+   return res.status(200).json(new ApiResponse(200, updateComment, "comment update successfully"))
 })
 
 export{addComment, updateComment}
