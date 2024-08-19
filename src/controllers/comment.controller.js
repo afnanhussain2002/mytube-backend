@@ -7,7 +7,7 @@ const addComment = asyncHandler(async (req, res) => {
   const { comment } = req.body;
   const {videoId} = req.params
 
-  if (!comment && !videoId) {
+  if (!comment) {
     throw new ApiError(401, "Write something for comment");
   }
 
