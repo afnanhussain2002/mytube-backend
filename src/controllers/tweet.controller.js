@@ -69,7 +69,23 @@ const updateTweet = asyncHandler(async(req,res) =>{
         {new:true}
     )
 
-    return res.status(200).json(new ApiError(200, updateTweet, "Tweet update successfully"))
+    return res.status(200).json(new ApiResponse(200, updateTweet, "Tweet update successfully"))
+})
+
+const deleteTweet = asyncHandler(async(req,res) =>{
+    const {tweetId} = req.params
+
+    if (!tweetId) {
+        throw new ApiError(400, "Tweet is not found!")
+    }
+
+    const deleteTweet = await Tweet.findByIdAndDelete(tweetId)
+
+    if (!deleteTweet) {
+        throw new ApiError(500, "Something went wrong while delete that tweet")
+    }
+
+    return res.status(200).json(new ApiResponse(200, deleteTweet, "The tweet delete successfully"))
 })
 
 export { createTweet, getUserTweet, updateTweet };

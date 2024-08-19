@@ -11,6 +11,6 @@ const router = Router();
 
 router.route("/create-tweet").post(verifyJWT, createTweet);
 router.route("/:userId").get(getUserTweet);
-router.route("/update/:tweetId").patch(verifyJWT,verifyOwner,updateTweet);
+router.route("/update/:tweetId").patch(verifyJWT,updateTweet);
 
 export default router;

@@ -9,16 +9,16 @@ export const verifyOwner = asyncHandler(async(req,_,next) =>{
         const userId = req.user
         
 
-        const getOwnerVideo = await Video.findById(videoId)
+        const getOwnerData = await Video.findById(videoId)
 
-        if (!getOwnerVideo) {
-            throw new ApiError(400, "Video not found")
+        if (!getOwnerData) {
+            throw new ApiError(400, "Data not found")
         }
 
-        console.log("video owner", getOwnerVideo.owner[0]);
+        console.log("video owner", getOwnerData.owner[0]);
 
-        if (!userId._id.equals(getOwnerVideo.owner[0])) {
-            throw new ApiError(401, "You are not the owner of that video")
+        if (!userId._id.equals(getOwnerData.owner[0])) {
+            throw new ApiError(401, "You are not the owner")
         }
 
         next()

@@ -5,10 +5,12 @@ const tweetSchema = new Schema({
         type:String,
         required:true
      },
-     owner:{
+     owner:[
+      {
         type:Schema.Types.ObjectId,
         ref: "User"
     }
+   ]
 
 },{timestamps:true})
 
