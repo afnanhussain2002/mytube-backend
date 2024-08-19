@@ -26,7 +26,14 @@ const addComment = asyncHandler(async(req,res) =>{
 })
 
 const updateComment = asyncHandler(async(req,res) =>{
+   const {id} = req.params
+   const {content} = req.body
 
+   if (!content) {
+    throw new ApiError(401, "Write something for update comment")
+   }
+
+   
 })
 
 export{addComment, updateComment}
