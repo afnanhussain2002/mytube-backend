@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 const addComment = asyncHandler(async(req,res) =>{
   const {comment, videoId} = req.body
 
-  if (!comment) {
+  if (!comment && !videoId ) {
     throw new ApiError(401, "Write something for comment")
   }
 
