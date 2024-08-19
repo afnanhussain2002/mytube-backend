@@ -12,7 +12,8 @@ const createTweet = asyncHandler(async(req,res) =>{
    }
 //   send to database
    const tweet = await Tweet.create({
-    content
+    content,
+    owner: req.user
    })
 
 //    find that tweet
