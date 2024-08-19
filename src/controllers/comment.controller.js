@@ -51,7 +51,7 @@ const updateComment = asyncHandler(async(req,res) =>{
 })
 
 const deleteComment = asyncHandler(async(req,res) =>{
-    
+
 })
 
-export{addComment, updateComment}
+export{addComment, updateComment, deleteComment}
