@@ -13,10 +13,17 @@ const getVideoComments = asyncHandler(async(req,res) =>{
             $match:{
                 "video": new mongoose.Types.ObjectId(videoId)
             }
+        },
+        {
+            $skip:(page - 1) * limit
+        },
+        {
+            $limit:limit
         }
     ])
 
     console.log('comments of the video', getComments);
+    return res.status(200).json(new ApiResponse(200, getComments, "comments fetched successfully"))
 
 
 })
