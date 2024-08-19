@@ -68,6 +68,8 @@ const updateTweet = asyncHandler(async(req,res) =>{
         },
         {new:true}
     )
+
+    return res.status(200).json(new ApiError(200, updateTweet, "Tweet update successfully"))
 })
 
 export { createTweet, getUserTweet, updateTweet };
