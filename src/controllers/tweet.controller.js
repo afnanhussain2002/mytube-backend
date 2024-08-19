@@ -52,7 +52,7 @@ const getUserTweet = asyncHandler(async (req, res) => {
 });
 
 const updateTweet = asyncHandler(async(req,res) =>{
-    
+
 })
 
-export { createTweet, getUserTweet };
+export { createTweet, getUserTweet, updateTweet };
