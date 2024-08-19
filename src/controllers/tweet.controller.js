@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Tweet } from "../models/tweet.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
