@@ -3,6 +3,10 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+const getVideoComments = asyncHandler(async(req,res) =>{
+    
+})
+
 const addComment = asyncHandler(async(req,res) =>{
     const {content, video} = req.body
 
