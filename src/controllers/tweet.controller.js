@@ -10,12 +10,12 @@ const createTweet = asyncHandler(async(req,res) =>{
    if (!content) {
      throw new ApiError(400, "Write some content for tweet")
    }
-
+//   send to database
    const tweet = await Tweet.create({
     content
    })
 
-   
+//    find that tweet
    const createdTweet = await Tweet.findById(tweet._id)
    
    if (!createdTweet) {
