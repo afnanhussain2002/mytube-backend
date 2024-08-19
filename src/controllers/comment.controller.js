@@ -3,29 +3,26 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-const addComment = asyncHandler(async (req, res) => {
-  const { comment } = req.body;
-  const {videoId} = req.params
+const addComment = asyncHandler(async(req,res) =>{
+    const {content, video} = req.body
 
-  if (!comment) {
-    throw new ApiError(401, "Write something for comment");
-  }
+    console.log(content, video);
 
-  const newComment = new Comment({
-    comment,
-    video: videoId,
-    owner: req.user,
-  });
+    if (!content) {
+        throw new ApiError(401, "Content is required for add comment")
+    }
 
-  await newComment.save();
+    const newComment = await Comment.create({
+        content,
+        video,
+        owner: req.user
+    })
 
-  if (!newComment) {
-    throw new ApiError(501, "Something went wrong while upload that comment");
-  }
+    const createdComment = await Comment.findById(newComment._id)
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, newComment, "Comment has been added"));
-});
+    return res.status(200).json(new ApiResponse(200, createdComment, "Comment has been added"))
 
-export { addComment };
+
+})
+
+export{addComment}

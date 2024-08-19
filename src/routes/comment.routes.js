@@ -4,6 +4,6 @@ import { addComment } from "../controllers/comment.controller.js";
 
 const router = Router()
 
-router.route("/add-comment/:videoId").post(verifyJWT, addComment)
+router.route("/add-comment").post(verifyJWT, addComment)
 
 export default router
