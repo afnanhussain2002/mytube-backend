@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -6,6 +7,18 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const getVideoComments = asyncHandler(async(req,res) =>{
     const {videoId} = req.params
     const {page = 1, limit = 10} = req.query
+
+    const getComments = await Comment.aggregate([
+        {
+            $match:{
+                "video": new mongoose.Types.ObjectId(videoId)
+            }
+        }
+    ])
+
+    console.log('comments of the video', getComments);
+
+
 })
 
 const addComment = asyncHandler(async(req,res) =>{
