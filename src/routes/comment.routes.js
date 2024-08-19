@@ -6,7 +6,7 @@ import { Comment } from "../models/comment.model.js";
 
 const router = Router()
 
-router.route("/get-comments").get(getVideoComments)
+router.route("/:videoId").get(getVideoComments)
 router.route("/add-comment").post(verifyJWT, addComment)
 router.route("/update-comment/:id").patch(verifyJWT,verifyOwner(Comment), updateComment)
 router.route("/delete-comment/:id").delete(verifyJWT,verifyOwner(Comment), deleteComment)
