@@ -1,11 +1,34 @@
+import { Subscription } from "../models/subscription.model.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const toggleSubscription = asyncHandler(async(req,res) =>{
     // get channel for subscribe
-    const {id} = req.params
+    const {channelId} = req.params
+    const subscriberId = req.user._id
+
+    // check the subscriber already exists or not
+    const existingSubscription = await Subscription.findOne({
+        subscriber: subscriberId,
+        channel: channelId
+    })
+
+    if (existingSubscription) {
+        await Subscription.deleteOne({_id: existingSubscription._id})
+        return res.status(200).json(new ApiResponse(200, existingSubscription, "Unsubscribe successfully"))
+    }
+
+    const newSubscription = new Subscription({
+        subscriber: subscriberId,
+        channel:channelId
+    })
+    await newSubscription.save();
+
+    return res.status(201).json(new ApiResponse(201, newSubscription, "Subscribe successfully"))
+
     
-    // add subscribed channel into array of object
+
 
 })
 

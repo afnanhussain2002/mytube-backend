@@ -4,6 +4,6 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
-router.route("/channel/:id").post(verifyJWT,toggleSubscription)
+router.route("/channel/:channelId").post(verifyJWT,toggleSubscription)
 
 export default router
