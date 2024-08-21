@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { Subscription } from "../models/subscription.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -33,7 +34,17 @@ const toggleSubscription = asyncHandler(async(req,res) =>{
 })
 
 const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
+    // get the channel id
     const {channelId} = req.params
+
+    // find channel subscriber
+    const getSubscriber = await Subscription.aggregate([
+        {
+            $match:{
+                "subscriber":isValidObjectId(channelId)
+            }
+        }
+    ])
 })
 
 
