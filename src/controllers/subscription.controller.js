@@ -45,6 +45,7 @@ const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
             }
         }
     ])
+    console.log("channel subscribers", getSubscriber);
 })
 
 
