@@ -49,7 +49,8 @@ const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
 })
 
 const getSubscribedChannels = asyncHandler(async(req,res) =>{
-
+    // get the id of subscriber
+     const {subscriberId} = req.params
 })
 
 export{toggleSubscription, getUserChannelSubscriber, getSubscribedChannels}
