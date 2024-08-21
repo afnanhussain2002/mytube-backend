@@ -1,3 +1,4 @@
+
 import { Like } from "../models/like.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -9,8 +10,8 @@ const toggleVideoLike = asyncHandler(async(req,res) =>{
 
     // check liked already added or not
 
-    const existingLike = await Like.findById({
-        video:videoId,
+    const existingLike = await Like.findOne({
+        video: videoId,
         likedBy
     })
 
@@ -24,7 +25,7 @@ const toggleVideoLike = asyncHandler(async(req,res) =>{
         likedBy
     })
 
-    await Like.save()
+    await newLike.save()
     return res.status(200).json(new ApiResponse(200, newLike, "Liked successfully"))
 
 })
