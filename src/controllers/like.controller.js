@@ -81,7 +81,14 @@ const toggleTweetLike = asyncHandler(async(req,res) =>{
 })
 
 const getLikedVideos = asyncHandler(async(req,res) =>{
+   const {likedById} = req.params
 
+   const allLikedVideos = await Like.find({likedBy: likedById})
+
+   if (!allLikedVideos) {
+    throw new ApiError(401, "No liked video found!")
+}
+return res.status(200).json(new ApiResponse (200, allLikedVideos, "Liked video fetched successfully"))
 })
 
 
