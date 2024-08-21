@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import { Subscription } from "../models/subscription.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/apiError.js";
 
 
 const toggleSubscription = asyncHandler(async(req,res) =>{
@@ -38,8 +39,13 @@ const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
     const {channelId} = req.params
 
     // find channel subscriber
-    const getSubscriber = await Subscription.find({channel:isValidObjectId(channelId)})
+    const getSubscriber = await Subscription.find({channel:channelId})
+    if (!getSubscriber) {
+        throw new ApiError(401, "No subscriber found!")
+    }
     console.log("channel subscribers", getSubscriber);
+
+    return res.status(200).json(new ApiResponse(200, getSubscriber, "Channel subscriber fetched successfully"))
 })
 
 
