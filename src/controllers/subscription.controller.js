@@ -37,4 +37,4 @@ const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
 })
 
 
-export{toggleSubscription}
+export{toggleSubscription, getUserChannelSubscriber}
