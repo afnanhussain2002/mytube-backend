@@ -38,13 +38,7 @@ const getUserChannelSubscriber = asyncHandler(async(req,res) =>{
     const {channelId} = req.params
 
     // find channel subscriber
-    const getSubscriber = await Subscription.aggregate([
-        {
-            $match:{
-                "subscriber":isValidObjectId(channelId)
-            }
-        }
-    ])
+    const getSubscriber = await Subscription.find({channel:isValidObjectId(channelId)})
     console.log("channel subscribers", getSubscriber);
 })
 
