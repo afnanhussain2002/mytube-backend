@@ -139,4 +139,8 @@ const updatePlaylist = asyncHandler(async(req,res) =>{
     return res.status(200).json(new ApiResponse(200, updatePlaylist, "Playlist update successfully"))
 })
 
+const deletePlaylist = asyncHandler(async(req,res) =>{
+    
+})
+
 export{createPlaylist, getUserPlaylist, addVideoToPlaylist, removeVideoFromPlaylist, updatePlaylist}
