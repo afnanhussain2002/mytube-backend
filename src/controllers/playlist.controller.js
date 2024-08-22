@@ -113,4 +113,8 @@ const removeVideoFromPlaylist = asyncHandler(async(req,res) =>{
 
 })
 
+const updatePlaylist = asyncHandler(async(req,res) =>{
+    
+})
+
 export{createPlaylist, getUserPlaylist, addVideoToPlaylist, removeVideoFromPlaylist}
