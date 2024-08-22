@@ -9,16 +9,15 @@ const playListSchema = new Schema({
         type: String,
         required: true
     },
-    videos:[
-        {
+    videos:{
             type:Schema.Types.ObjectId,
             ref: "Video"
         }
-    ],
-    owner:{
+    ,
+    owner:[{
         type: Schema.Types.ObjectId,
         ref:"User"
-    }
+    }]
 },{timestamps:true})
 
 export const Playlist = mongoose.model("Playlist", playListSchema)
