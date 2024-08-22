@@ -6,7 +6,7 @@ const router = Router()
 
 router.route("/create-playlist").post(verifyJWT, createPlaylist)
 router.route("/get-playlist/:userId").get(verifyJWT, getUserPlaylist)
-router.route("/get-video/:playlistId/:videoId").post(verifyJWT, addVideoToPlaylist)
+router.route("/add-video/:playlistId/:videoId").post(verifyJWT, addVideoToPlaylist)
 router.route("/remove-video/:playlistId/:videoId").post(verifyJWT, removeVideoFromPlaylist)
 
 export default router;
