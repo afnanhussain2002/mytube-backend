@@ -56,7 +56,7 @@ const getUserPlaylist = asyncHandler(async(req,res) =>{
 })
 
 const addVideoToPlaylist = asyncHandler(async(req,res) =>{
-    
+
 })
 
-export{createPlaylist, getUserPlaylist}
+export{createPlaylist, getUserPlaylist, addVideoToPlaylist}
