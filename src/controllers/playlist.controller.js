@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { Playlist } from "../models/playlist.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -60,13 +60,17 @@ const addVideoToPlaylist = asyncHandler(async(req,res) =>{
 
     const {playlistId, videoId} = req.params
 
-    console.log('playlistID:',playlistId,"videoID:", videoId);
-
     const playlist = await Playlist.findById(playlistId)
+
 
     if (!playlist) {
         throw new ApiError(404, "Playlist not found!")
     }
+    
+    if (playlist.owner[0].toString() !== req.user._id.toString()) {
+        throw new ApiError(401, "You are not the owner of that playlist")
+    }
+
 
     if (playlist.videos.includes(videoId)) {
         throw new ApiError(400, "That video already added on that playlist")
@@ -91,7 +95,7 @@ const removeVideoFromPlaylist = asyncHandler(async(req,res) =>{
         throw new ApiError(404, "Playlist not found!")
     }
 
-    if (!playlist.owner[0] === req.user._id) {
+    if (playlist.owner[0].toString() !== req.user._id.toString()) {
         throw new ApiError(401, "You are not the owner of that playlist")
     }
 
