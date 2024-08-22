@@ -57,6 +57,10 @@ const getUserPlaylist = asyncHandler(async(req,res) =>{
 
 const addVideoToPlaylist = asyncHandler(async(req,res) =>{
 
+    const {playlistId, videoId} = req.params
+
+    console.log('playlistID:',playlistId,"videoID:", videoId);
+
 })
 
 export{createPlaylist, getUserPlaylist, addVideoToPlaylist}
