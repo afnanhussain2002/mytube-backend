@@ -32,4 +32,8 @@ const createPlaylist = asyncHandler(async(req,res) =>{
 
 })
 
+const getUserPlaylist = asyncHandler(async(req,res) =>{
+    
+})
+
 export{createPlaylist}
