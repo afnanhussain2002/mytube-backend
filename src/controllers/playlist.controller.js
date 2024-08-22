@@ -140,7 +140,7 @@ const updatePlaylist = asyncHandler(async(req,res) =>{
 })
 
 const deletePlaylist = asyncHandler(async(req,res) =>{
-    
+
 })
 
-export{createPlaylist, getUserPlaylist, addVideoToPlaylist, removeVideoFromPlaylist, updatePlaylist}
+export{createPlaylist, getUserPlaylist, addVideoToPlaylist, removeVideoFromPlaylist, updatePlaylist, deletePlaylist}
