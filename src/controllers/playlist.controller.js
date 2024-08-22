@@ -114,7 +114,29 @@ const removeVideoFromPlaylist = asyncHandler(async(req,res) =>{
 })
 
 const updatePlaylist = asyncHandler(async(req,res) =>{
+    const {id:playlistId} = req.params
+    const {name, description} = req.body
 
+    if (!(name || description)) {
+        throw new ApiError(401, "name or description have to provide for update playlist")
+    }
+
+    const updatePlaylist = await Playlist.findByIdAndUpdate(
+        playlistId,
+        {
+            $set:{
+                name,
+                description
+            }
+        },
+        {new:true}
+    )
+
+    if (!updatePlaylist) {
+        throw new ApiError(500, "Something went wrong when update playlist")
+    }
+
+    return res.status(200).json(new ApiResponse(200, updatePlaylist, "Playlist update successfully"))
 })
 
 export{createPlaylist, getUserPlaylist, addVideoToPlaylist, removeVideoFromPlaylist, updatePlaylist}
