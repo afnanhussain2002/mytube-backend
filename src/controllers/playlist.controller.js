@@ -83,6 +83,25 @@ const addVideoToPlaylist = asyncHandler(async(req,res) =>{
 })
 
 const removeVideoFromPlaylist = asyncHandler(async(req,res) =>{
+    const {playlistId, videoId} = req.params
+
+    const playlist = await Playlist.findById(playlistId)
+
+    if (!playlist) {
+        throw new ApiError(404, "Playlist not found!")
+    }
+
+    const videoIndex = playlist.videos.indexOf(videoId)
+
+    if (videoIndex === -1) {
+        throw new ApiError(404, "Video not found on that playlist")
+    }
+
+    playlist.videos.splice(videoIndex, 1)
+
+    await playlist.save()
+
+    return res.status(200).json(new ApiResponse(200, "Video removed from playlist"))
 
 })
 
