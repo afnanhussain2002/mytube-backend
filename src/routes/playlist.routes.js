@@ -5,6 +5,6 @@ import { createPlaylist, getUserPlaylist } from "../controllers/playlist.control
 const router = Router()
 
 router.route("/create-playlist").post(verifyJWT, createPlaylist)
-router.route("/get-playlist").get(verifyJWT, getUserPlaylist)
+router.route("/get-playlist/:userId").get(verifyJWT, getUserPlaylist)
 
 export default router;
