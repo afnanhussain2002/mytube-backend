@@ -13,7 +13,8 @@ const createPlaylist = asyncHandler(async(req,res) =>{
 
     const savePlaylist = await Playlist.create({
         name,
-        description: description
+        description: description,
+        owner:req.user
     })
 
     if (!savePlaylist) {
