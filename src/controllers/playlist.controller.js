@@ -1,22 +1,32 @@
 import { Playlist } from "../models/playlist.model";
 import { ApiError } from "../utils/apiError";
+import { ApiResponse } from "../utils/apiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const createPlaylist = asyncHandler(async(req,res) =>{
     // get the details of playlist
     const {name, description} = req.body;
 
-    if (!name) {
-        throw new ApiError(401, "This playlist must have a name")
+    if (!name && !description) {
+        throw new ApiError(401, "This playlist must have a name and description")
     }
 
     const savePlaylist = await Playlist.create({
         name,
-        description: description || ""
+        description: description
     })
 
+    if (!savePlaylist) {
+        throw new ApiError(501, "Something went wrong when create playlist")
+    }
 
+    const createdPlaylist = await Playlist.findById(savePlaylist._id)
 
+    if (!createPlaylist) {
+        throw new ApiError(400, "No playlist found!")
+    }
+
+    return res.status(200).json(new ApiResponse(200, createdPlaylist, "Playlist found successfully" ))
 
 
 })
