@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Playlist } from "../models/playlist.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -36,9 +37,21 @@ const getUserPlaylist = asyncHandler(async(req,res) =>{
 
     const {userId} = req.params
 
-    const findPlaylist = await Playlist.findById(userId)
+    const findPlaylist = await Playlist.aggregate([
+        {
+            $match:{
+                "owner":new mongoose.Types.ObjectId(userId)
+            }
+        }
+    ])
+    if (!findPlaylist) {
+        throw new ApiError(400, "No playlist found!")
+    }
 
     console.log("find playlist of user", findPlaylist);
+
+    return res.status(200).json(new ApiResponse(200, findPlaylist, "Playlist fetch successfully"))
+
 
 })
 
