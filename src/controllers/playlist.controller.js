@@ -91,6 +91,10 @@ const removeVideoFromPlaylist = asyncHandler(async(req,res) =>{
         throw new ApiError(404, "Playlist not found!")
     }
 
+    if (!playlist.owner[0] === req.user._id) {
+        throw new ApiError(401, "You are not the owner of that playlist")
+    }
+
     const videoIndex = playlist.videos.indexOf(videoId)
 
     if (videoIndex === -1) {
