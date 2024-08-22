@@ -27,7 +27,7 @@ const createPlaylist = asyncHandler(async(req,res) =>{
         throw new ApiError(400, "No playlist found!")
     }
 
-    return res.status(200).json(new ApiResponse(200, createdPlaylist, "Playlist found successfully" ))
+    return res.status(200).json(new ApiResponse(200, createdPlaylist, "Playlist created successfully" ))
 
 
 })
