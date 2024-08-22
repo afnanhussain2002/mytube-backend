@@ -33,7 +33,13 @@ const createPlaylist = asyncHandler(async(req,res) =>{
 })
 
 const getUserPlaylist = asyncHandler(async(req,res) =>{
-    
+
+    const {userId} = req.params
+
+    const findPlaylist = await Playlist.findById(userId)
+
+    console.log("find playlist of user", findPlaylist);
+
 })
 
-export{createPlaylist}
+export{createPlaylist, getUserPlaylist}
